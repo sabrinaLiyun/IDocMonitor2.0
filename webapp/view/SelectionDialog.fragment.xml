@@ -1,0 +1,19 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<SelectDialog
+		noDataText="No Company Code Found"
+		title="Select Company Code"
+		multiSelect="true"
+		search=".onSearch"
+		confirm=".onDialogClose"
+		cancel=".onDialogClose"
+		items="{
+			path: '/CompanyCollection'
+		}">
+		<StandardListItem
+			title="{code}"
+			description="{name}"
+			type="Active" />
+	</SelectDialog>
+</core:FragmentDefinition>

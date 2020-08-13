@@ -1,0 +1,158 @@
+<mvc:View height="100%" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:layout="sap.ui.layout" xmlns:filterbar="sap.ui.comp.filterbar"
+	xmlns:core="sap.ui.core" xmlns:semantic="sap.f.semantic" xmlns:f="sap.f" xmlns:variants="sap.ui.comp.variants"
+	controllerName="com.bosch.idocmonitor.controller.Main">
+	<f:DynamicPage headerExpanded="true" showFooter="true" class="sapUiSizeCompact">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<variants:VariantManagement standardItemText="IDoc"/>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader pinnable="true">
+				<f:content>
+					<filterbar:FilterBar useToolbar="false" search="onSearch" filterBarExpanded="false" filterContainerWidth="14rem">
+						<filterbar:filterItems>
+							<filterbar:FilterItem label="LS for Receiver" name="LSSender">
+								<filterbar:control>
+									<Input id="inputLSSender" type="Text" showValueHelp="false" enabled="true" visible="true" width="auto" valueHelpOnly="false" required="true"
+										valueStateText="Invalid entry" maxLength="0" liveChange="inputChange"/>
+								</filterbar:control>
+							</filterbar:FilterItem>
+							<filterbar:FilterItem label="LS for Receiver" name="LSReceiver">
+								<filterbar:control>
+									<Input type="Text" showValueHelp="false" enabled="true" visible="true" width="auto" valueHelpOnly="false" required="true"
+										valueStateText="Invalid entry" maxLength="0"/>
+								</filterbar:control>
+							</filterbar:FilterItem>
+							<filterbar:FilterItem label="IDoc Messgae Type" name="IDocMsgType">
+								<filterbar:control>
+									<Input type="Text" showValueHelp="false" enabled="true" visible="true" width="auto" valueHelpOnly="false" required="true"
+										valueStateText="Invalid entry" maxLength="0"/>
+								</filterbar:control>
+							</filterbar:FilterItem>
+							<filterbar:FilterItem label="Company Code" name="CompCode">
+								<filterbar:control>
+									<MultiInput id="compCode" required="true" showValueHelp="true" valueHelpRequest=".onValueHelpRequest"/>
+								</filterbar:control>
+							</filterbar:FilterItem>
+							<filterbar:FilterItem label="Accounting Document Number in Sender" name="ADNSender">
+								<filterbar:control>
+									<Input type="Text" showValueHelp="false" enabled="true" visible="true" width="auto" valueHelpOnly="false" required="false"
+										valueStateText="Invalid entry" maxLength="0"/>
+								</filterbar:control>
+							</filterbar:FilterItem>
+							<filterbar:FilterItem label="Accounting Document Number in Receiver" name="ADNReceiver">
+								<filterbar:control>
+									<Input type="Text" showValueHelp="false" enabled="true" visible="true" width="auto" valueHelpOnly="false" required="false"
+										valueStateText="Invalid entry" maxLength="0"/>
+								</filterbar:control>
+							</filterbar:FilterItem>
+							<filterbar:FilterItem label="Posting Date Range" name="PostDate">
+								<filterbar:control>
+									<DateRangeSelection id="dateRange" width="auto" displayFormat="medium" required="true" valueStateText="Invalid entry" enabled="true"
+										visible="true" change="_onDateRangeSelectionChange"/>
+								</filterbar:control>
+							</filterbar:FilterItem>
+							<filterbar:FilterItem label="Fiscal Year" name="Year">
+								<filterbar:control>
+									<!--<ComboBox enabled="true" required="true" visible="true" width="auto" maxWidth="100%" items="{years>/yearCollection}">-->
+									<!--	<core:Item text="{text}"/>-->
+									<!--</ComboBox>-->
+									<ComboBox required="true" items="{path: 'years>/arrayYears' }">
+										<!--<core:items>-->
+										<core:Item text="{years>year}"/>
+										<!--</core:items>-->
+									</ComboBox>
+								</filterbar:control>
+							</filterbar:FilterItem>
+						</filterbar:filterItems>
+					</filterbar:FilterBar>
+				</f:content>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<Table id="idocTable" inset="false" noDataText="to start, set the filters first" updateFinished=".onUpdateFinished"
+				items="{path:'/IDoc', sorter:{path:'transID'}}">
+				<headerToolbar>
+					<Toolbar>
+						<Title id="tableTitle"></Title>
+					</Toolbar>
+				</headerToolbar>
+				<columns>
+					<Column>
+						<Text text="Transaction ID"/>
+					</Column>
+					<Column>
+						<Text text="LS for Sender"/>
+					</Column>
+					<Column>
+						<Text text="Outbounding IDoc #"/>
+					</Column>
+					<Column>
+						<Text text="Outbounding IDoc Status"/>
+					</Column>
+					<Column>
+						<Text text="LS for Receiver"/>
+					</Column>
+					<Column>
+						<Text text="Inbounding IDoc #"/>
+					</Column>
+					<Column>
+						<Text text="Inbounding IDoc Status"/>
+					</Column>
+					<Column>
+						<Text text="Company Code"/>
+					</Column>
+					<Column>
+						<Text text="Fiscal Year"/>
+					</Column>
+					<Column>
+						<Text text="Accounting Doc. No. in Sender"/>
+					</Column>
+					<Column>
+						<Text text="Accounting Doc. No. in Receiver"/>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem>
+						<cells>
+							<Text text="{transID}"/>
+						</cells>
+						<cells>
+							<Text text="{LSSender}"/>
+						</cells>
+						<cells>
+							<Text text="{outNo}"/>
+						</cells>
+						<cells>
+							<Text text="{outStatus}"/>
+						</cells>
+						<cells>
+							<Text text="{LSReceiver}"/>
+						</cells>
+						<cells>
+							<Text text="{inNo}"/>
+						</cells>
+						<cells>
+							<Text text="{inStatus}"/>
+						</cells>
+						<cells>
+							<Text text="{compCode}"/>
+						</cells>
+						<cells>
+							<Text text="{year}"/>
+						</cells>
+						<cells>
+							<Text text="{ADNSender}"/>
+						</cells>
+						<cells>
+							<Text text="{ADNReceiver}"/>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</f:content>
+	</f:DynamicPage>
+</mvc:View>

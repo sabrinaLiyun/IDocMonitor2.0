@@ -1,0 +1,13 @@
+<core:FragmentDefinition
+	xmlns="sap.ui.comp.valuehelpdialog"
+	xmlns:core="sap.ui.core">
+	<ValueHelpDialog
+		title="Company Code"
+		ok=".onValueHelpOkPress"
+		cancel=".onValueHelpCancelPress"
+		afterClose=".onValueHelpAfterClose"
+		key="Code"
+		descriptionKey="Name"
+	>
+	</ValueHelpDialog>
+</core:FragmentDefinition>

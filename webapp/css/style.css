@@ -1,0 +1,9 @@
+.VerticalLayout { 
+	width: 18rem;
+	
+}
+.sapUiVlt {
+    display: inline-block;
+    vertical-align: text-top;
+    width: 18rem;
+}
