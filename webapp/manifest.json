@@ -35,8 +35,10 @@
 			"id": "app"
 		},
 		"dependencies": {
-			"minUI5Version": "1.30",
+			"minUI5Version": "1.65.6",
 			"libs": {
+				"sap.ui.layout": {},
+				"sap.ui.core": {},
 				"sap.m": {}
 			}
 		},
@@ -63,9 +65,9 @@
 			}
 		},
 		"resources": {
-			"css": {
+			"css": [{
 				"uri": "css/style.css"
-			}
+			}]
 		},
 		"routing": {
 			"config": {

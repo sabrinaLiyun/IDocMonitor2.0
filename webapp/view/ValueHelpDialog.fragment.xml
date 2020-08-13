@@ -6,8 +6,8 @@
 		ok=".onValueHelpOkPress"
 		cancel=".onValueHelpCancelPress"
 		afterClose=".onValueHelpAfterClose"
-		key="Code"
-		descriptionKey="Name"
+		key="Bukrs"
+		descriptionKey="Butxt"
 	>
 	</ValueHelpDialog>
 </core:FragmentDefinition>

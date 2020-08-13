@@ -2,9 +2,9 @@ sap.ui.define([
 	"sap/ui/core/mvc/Controller",
 	"sap/ui/model/json/JSONModel",
 	"sap/ui/core/Fragment",
-	'sap/m/ColumnListItem',
-	'sap/m/Label',
-	'sap/m/Token'
+	"sap/m/ColumnListItem",
+	"sap/m/Label",
+	"sap/m/Token"
 ], function (Controller, JSONModel, Fragment, ColumnListItem, Label, Token) {
 	"use strict";
 	return Controller.extend("com.bosch.idocmonitor.controller.Main", {
@@ -31,10 +31,10 @@ sap.ui.define([
 			var columns = {
 				cols: [{
 					label: "Company Code",
-					template: "Code"
+					template: "Bukrs"
 				}, {
 					label: "Company Name",
-					template: "Name"
+					template: "Butxt"
 				}]
 			};
 			this._oModelColumns = new JSONModel(columns);
@@ -100,15 +100,15 @@ sap.ui.define([
 			this.getView().addDependent(this._oValueHelpDialog);
 
 			this._oValueHelpDialog.getTableAsync().then(function (oTable) {
-				oTable.setModel(this._oModelCompanies);
+				oTable.setModel(this.getOwnerComponent().getModel() );
 				oTable.setModel(this._oModelColumns, "columns");
 
 				if (oTable.bindRows) {
-					oTable.bindAggregation("rows", "/companies");
+					oTable.bindAggregation("rows", "/CompanyCodeSet");
 				}
 
 				if (oTable.bindItems) {
-					oTable.bindAggregation("items", "/companies", function () {
+					oTable.bindAggregation("items", "/CompanyCodeSet", function () {
 						return new ColumnListItem({
 							cells: aCols.map(function (column) {
 								return new Label({
