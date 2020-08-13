@@ -74,7 +74,7 @@
 		</f:header>
 		<f:content>
 			<Table id="idocTable" inset="false" noDataText="to start, set the filters first" updateFinished=".onUpdateFinished"
-				items="{path:'/IDoc', sorter:{path:'transID'}}">
+				items="{path:'/IDOCMV2SET', sorter:{path:'Bukrs'}}">
 				<headerToolbar>
 					<Toolbar>
 						<Title id="tableTitle"></Title>
@@ -118,37 +118,37 @@
 				<items>
 					<ColumnListItem>
 						<cells>
-							<Text text="{transID}"/>
+							<Text text="{Tid}"/>
 						</cells>
 						<cells>
-							<Text text="{LSSender}"/>
+							<Text text="{Sndprn}"/>
 						</cells>
 						<cells>
-							<Text text="{outNo}"/>
+							<Text text="{SndBelnr}"/>
 						</cells>
 						<cells>
-							<Text text="{outStatus}"/>
+							<Text text="{SndStatus}"/>
 						</cells>
 						<cells>
-							<Text text="{LSReceiver}"/>
+							<Text text="{Rcvprn}"/>
 						</cells>
 						<cells>
-							<Text text="{inNo}"/>
+							<Text text="{RcvBelnr}"/>
 						</cells>
 						<cells>
-							<Text text="{inStatus}"/>
+							<Text text="{RcvStatus}"/>
 						</cells>
 						<cells>
-							<Text text="{compCode}"/>
+							<Text text="{Bukrs}"/>
 						</cells>
 						<cells>
-							<Text text="{year}"/>
+							<Text text="{Gjahr}"/>
 						</cells>
 						<cells>
-							<Text text="{ADNSender}"/>
+							<Text text="{SndDocnum}"/>
 						</cells>
 						<cells>
-							<Text text="{ADNReceiver}"/>
+							<Text text="{RcvDocnum}"/>
 						</cells>
 					</ColumnListItem>
 				</items>

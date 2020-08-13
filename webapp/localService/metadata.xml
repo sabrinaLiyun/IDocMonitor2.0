@@ -1,0 +1,31 @@
+<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx"
+	xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:sap="http://www.sap.com/Protocols/SAPData">
+	<edmx:DataServices m:DataServiceVersion="2.0">
+		<Schema Namespace="ZIDOC_MONITOR_V2_SRV" xml:lang="en" sap:schema-version="1" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+			<EntityType Name="CompanyCode" sap:content-version="1">
+				<Key><PropertyRef Name="Bukrs"/></Key><Property Name="Bukrs" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Company Code" sap:creatable="false"
+					sap:updatable="false"/><Property Name="Butxt" Type="Edm.String" Nullable="false" MaxLength="25" sap:unicode="false" sap:label="Company Name" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/></EntityType>
+			<EntityType Name="IDOCMV2_TYPE" sap:content-version="1">
+				<Key><PropertyRef Name="Bukrs"/><PropertyRef Name="Gjahr"/><PropertyRef Name="SndDocnum"/><PropertyRef Name="SndBelnr"/><PropertyRef Name="RcvDocnum"/><PropertyRef Name="RcvBelnr"/><PropertyRef Name="Mestyp"/><PropertyRef Name="Credat"/></Key><Property Name="Bukrs" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Company Code" sap:creatable="false"
+					sap:updatable="false"/><Property Name="Gjahr" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Fiscal Year" sap:creatable="false"
+					sap:updatable="false"/><Property Name="SndDocnum" Type="Edm.String" Nullable="false" MaxLength="16" sap:unicode="false" sap:label="Outbounding IDoc #"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="SndBelnr" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Accounting Doc No. in Sender"
+					sap:creatable="false" sap:updatable="false"/><Property Name="RcvDocnum" Type="Edm.String" Nullable="false" MaxLength="16" sap:unicode="false" sap:label="Inbounding IDoc #"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="RcvBelnr" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Accounting Doc No. in Receiver"
+					sap:creatable="false" sap:updatable="false"/><Property Name="Sndprn" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="LS for Sender"
+					sap:creatable="false" sap:updatable="false"/><Property Name="SndStatus" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:label="Outbounding IDoc Status"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="Rcvprn" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="LS for Receiver"
+					sap:creatable="false" sap:updatable="false"/><Property Name="RcvStatus" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:label="Inbounding IDoc Status"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="Mestyp" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Message Type" sap:creatable="false"
+					sap:updatable="false"/><Property Name="Tid" Type="Edm.String" Nullable="false" MaxLength="24" sap:unicode="false" sap:label="Transaction ID" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="Credat" Type="Edm.DateTime" Nullable="false" Precision="7" sap:unicode="false" sap:label="Created On" sap:creatable="false"
+					sap:updatable="false"/><Property Name="Cretim" Type="Edm.Time" Nullable="false" Precision="0" sap:unicode="false" sap:label="Created at" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/></EntityType>
+			<EntityContainer Name="ZIDOC_MONITOR_V2_SRV_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx"><EntitySet Name="CompanyCodeSet" EntityType="ZIDOC_MONITOR_V2_SRV.CompanyCode" sap:creatable="false" sap:updatable="false"
+				sap:deletable="false" sap:searchable="true" sap:pageable="false" sap:content-version="1"/><EntitySet Name="IDOCMV2SET" EntityType="ZIDOC_MONITOR_V2_SRV.IDOCMV2_TYPE" sap:creatable="false" sap:updatable="false"
+				sap:deletable="false" sap:searchable="true" sap:pageable="false" sap:content-version="1"/></EntityContainer><atom:link rel="self" href="http://rb3s4xa0.server.bosch.com:8066/sap/opu/odata/sap/ZIDOC_MONITOR_V2_SRV/$metadata"
+				xmlns:atom="http://www.w3.org/2005/Atom"/><atom:link rel="latest-version" href="http://rb3s4xa0.server.bosch.com:8066/sap/opu/odata/sap/ZIDOC_MONITOR_V2_SRV/$metadata"
+				xmlns:atom="http://www.w3.org/2005/Atom"/></Schema>
+	</edmx:DataServices>
+</edmx:Edmx>
