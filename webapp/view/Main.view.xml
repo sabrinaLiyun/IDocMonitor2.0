@@ -1,6 +1,6 @@
 <mvc:View height="100%" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:layout="sap.ui.layout" xmlns:filterbar="sap.ui.comp.filterbar"
 	xmlns:core="sap.ui.core" xmlns:semantic="sap.f.semantic" xmlns:f="sap.f" xmlns:variants="sap.ui.comp.variants"
-	controllerName="com.bosch.idocmonitor.controller.Main">
+	controllerName="com.bosch.idocmonitor.controller.Main" id="main">
 	<f:DynamicPage headerExpanded="true" showFooter="true" class="sapUiSizeCompact">
 		<f:title>
 			<f:DynamicPageTitle>
@@ -14,7 +14,7 @@
 				<f:content>
 					<filterbar:FilterBar useToolbar="false" search="onSearch" filterBarExpanded="false" filterContainerWidth="14rem">
 						<filterbar:filterItems>
-							<filterbar:FilterItem label="LS for Receiver" name="LSSender">
+							<filterbar:FilterItem label="LS for Sender" name="LSSender">
 								<filterbar:control>
 									<Input id="inputLSSender" type="Text" showValueHelp="false" enabled="true" visible="true" width="auto" valueHelpOnly="false" required="true"
 										valueStateText="Invalid entry" maxLength="0" liveChange="inputChange"/>
@@ -22,37 +22,37 @@
 							</filterbar:FilterItem>
 							<filterbar:FilterItem label="LS for Receiver" name="LSReceiver">
 								<filterbar:control>
-									<Input type="Text" showValueHelp="false" enabled="true" visible="true" width="auto" valueHelpOnly="false" required="true"
-										valueStateText="Invalid entry" maxLength="0"/>
+									<Input id="inputLSReceiver" type="Text" showValueHelp="false" enabled="true" visible="true" width="auto" valueHelpOnly="false" required="true"
+										valueStateText="Invalid entry" maxLength="0" liveChange="inputChange"/>
 								</filterbar:control>
 							</filterbar:FilterItem>
 							<filterbar:FilterItem label="IDoc Messgae Type" name="IDocMsgType">
 								<filterbar:control>
-									<Input type="Text" showValueHelp="false" enabled="true" visible="true" width="auto" valueHelpOnly="false" required="true"
-										valueStateText="Invalid entry" maxLength="0"/>
+									<Input id="inputMsgType" type="Text" showValueHelp="false" enabled="true" visible="true" width="auto" valueHelpOnly="false" required="true"
+										valueStateText="Invalid entry" maxLength="0" liveChange="inputChange"/>
 								</filterbar:control>
 							</filterbar:FilterItem>
 							<filterbar:FilterItem label="Company Code" name="CompCode">
 								<filterbar:control>
-									<MultiInput id="compCode" required="true" showValueHelp="true" valueHelpRequest=".onValueHelpRequest"/>
+									<MultiInput id="compCode" required="true" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" tokenUpdate="compCodeChange"/>
 								</filterbar:control>
 							</filterbar:FilterItem>
 							<filterbar:FilterItem label="Accounting Document Number in Sender" name="ADNSender">
 								<filterbar:control>
-									<Input type="Text" showValueHelp="false" enabled="true" visible="true" width="auto" valueHelpOnly="false" required="false"
-										valueStateText="Invalid entry" maxLength="0"/>
+									<Input id="inputADNSender" type="Text" showValueHelp="false" enabled="true" visible="true" width="auto" valueHelpOnly="false" required="false"
+										valueStateText="Invalid entry" maxLength="0" />
 								</filterbar:control>
 							</filterbar:FilterItem>
 							<filterbar:FilterItem label="Accounting Document Number in Receiver" name="ADNReceiver">
 								<filterbar:control>
-									<Input type="Text" showValueHelp="false" enabled="true" visible="true" width="auto" valueHelpOnly="false" required="false"
-										valueStateText="Invalid entry" maxLength="0"/>
+									<Input id="inputADNReceiver"  type="Text" showValueHelp="false" enabled="true" visible="true" width="auto" valueHelpOnly="false" required="false"
+										valueStateText="Invalid entry" maxLength="0" />
 								</filterbar:control>
 							</filterbar:FilterItem>
 							<filterbar:FilterItem label="Posting Date Range" name="PostDate">
 								<filterbar:control>
 									<DateRangeSelection id="dateRange" width="auto" displayFormat="medium" required="true" valueStateText="Invalid entry" enabled="true"
-										visible="true" change="_onDateRangeSelectionChange"/>
+										visible="true" change="inputChange"/>
 								</filterbar:control>
 							</filterbar:FilterItem>
 							<filterbar:FilterItem label="Fiscal Year" name="Year">
@@ -60,7 +60,7 @@
 									<!--<ComboBox enabled="true" required="true" visible="true" width="auto" maxWidth="100%" items="{years>/yearCollection}">-->
 									<!--	<core:Item text="{text}"/>-->
 									<!--</ComboBox>-->
-									<ComboBox required="true" items="{path: 'years>/arrayYears' }">
+									<ComboBox id="year" required="true" items="{path: 'years>/arrayYears' }" change="inputChange">
 										<!--<core:items>-->
 										<core:Item text="{years>year}"/>
 										<!--</core:items>-->

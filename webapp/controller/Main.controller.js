@@ -4,8 +4,11 @@ sap.ui.define([
 	"sap/ui/core/Fragment",
 	"sap/m/ColumnListItem",
 	"sap/m/Label",
-	"sap/m/Token"
-], function (Controller, JSONModel, Fragment, ColumnListItem, Label, Token) {
+	"sap/m/Token",
+	"sap/ui/model/Filter",
+	"sap/ui/model/FilterOperator",
+	"../model/formatter"
+], function (Controller, JSONModel, Fragment, ColumnListItem, Label, Token, Filter, FilterOperator, Formatter) {
 	"use strict";
 	return Controller.extend("com.bosch.idocmonitor.controller.Main", {
 		onInit: function () {
@@ -38,7 +41,6 @@ sap.ui.define([
 				}]
 			};
 			this._oModelColumns = new JSONModel(columns);
-			this._oModelCompanies = new JSONModel(sap.ui.require.toUrl("com/bosch/idocmonitor/localService/company.json"))
 
 			var oModelYear = new JSONModel(oYears);
 			// var oModelYear = new JSONModel(sap.ui.require.toUrl("com/bosch/idocmonitor/localService/years.json"));
@@ -46,6 +48,8 @@ sap.ui.define([
 
 			// var oModel = new JSONModel();
 			// this.getView().setModel(oModel);
+
+			this._oTable = this.getView().byId("idocTable");
 
 		},
 
@@ -62,24 +66,89 @@ sap.ui.define([
 
 		onSearch: function () {
 
-			var oDateRange = this.getView().byId("dateRange");
-			if (oDateRange.getDateValue() !== null) {
-				var sFrom = oDateRange.getFrom().toDateString().slice(4, 15);
-				var sTo = oDateRange.getTo().toDateString().slice(4, 15);
-				var oTitle = this.getView().byId("tableTitle");
-				var sTitle = sFrom.concat(" - ", sTo);
-				oTitle.setText(sTitle);
-			}
+			var aFilter = [];
+			var flag_search;
 
 			var oLSSender = this.getView().byId("inputLSSender");
 			if (oLSSender.getValue() === "") {
+				flag_search = "reject";
 				oLSSender.setValueState(sap.ui.core.ValueState.Error);
+			} else {
+				aFilter.push(new Filter("Sndprn", FilterOperator.EQ, oLSSender.getValue()));
 			}
 
-			if (typeof this.getView().getModel() === "undefined") {
-				var oModel = new JSONModel(sap.ui.require.toUrl("com/bosch/idocmonitor/localService/idocs.json"));
-				this.getView().setModel(oModel);
+			var oLSReceiver = this.getView().byId("inputLSReceiver");
+			if (oLSReceiver.getValue() === "") {
+				flag_search = "reject";
+				oLSReceiver.setValueState(sap.ui.core.ValueState.Error);
+			} else {
+				aFilter.push(new Filter("Rcvprn", FilterOperator.EQ, oLSReceiver.getValue()));
 			}
+
+			var oMsgType = this.getView().byId("inputMsgType");
+			if (oMsgType.getValue() === "") {
+				flag_search = "reject";
+				oMsgType.setValueState(sap.ui.core.ValueState.Error);
+			} else {
+				aFilter.push(new Filter("Mestyp", FilterOperator.EQ, oMsgType.getValue()));
+			}
+
+			var oBukrs = this.getView().byId("compCode");
+			if (oBukrs.getTokens().length === 0) {
+				flag_search = "reject";
+				oBukrs.setValueState(sap.ui.core.ValueState.Error);
+			} else {
+				for (var i = 0; i < oBukrs.getTokens().length; i++) {
+					aFilter.push(new Filter("Bukrs", FilterOperator.EQ, oBukrs.getTokens()[i].getKey()));
+				}
+			}
+
+			var oADNSender = this.getView().byId("inputADNSender");
+			if (oADNSender.getValue() !== "") {
+				aFilter.push(new Filter("SndDocnum", FilterOperator.EQ, oADNSender.getValue()));
+			}
+
+			var oADNReceiver = this.getView().byId("inputADNReceiver");
+			if (oADNReceiver.getValue() !== "") {
+				aFilter.push(new Filter("RcvDocnum", FilterOperator.EQ, oADNReceiver.getValue()));
+			}
+
+			var oDateRange = this.getView().byId("dateRange");
+			if (oDateRange.getDateValue() !== null) {
+				var dateFrom = oDateRange.getFrom();
+				var dateTo = oDateRange.getTo();
+				var sFrom = Formatter.dateFormat(dateFrom);
+				var sTo = Formatter.dateFormat(dateTo);
+				aFilter.push(new Filter("Credat", FilterOperator.BT, dateFrom, dateTo));
+				// aFilter.push(new Filter("Credat",FilterOperator.LE,sTo));
+				// var oTitle = this.getView().byId("tableTitle");
+				// var sTitle = sFrom.concat(" - ", sTo);
+				// oTitle.setText(sTitle);
+			} else {
+				flag_search = "reject";
+				oDateRange.setValueState(sap.ui.core.ValueState.Error);
+			}
+
+			var oYear = this.getView().byId("year");
+			if (oYear.getSelectedItem() === null) {
+				flag_search = "reject";
+				oYear.setValueState(sap.ui.core.ValueState.Error);
+			} else {
+				aFilter.push(new Filter("Gjahr", FilterOperator.EQ, oYear.getSelectedItem().getText()));
+			}
+
+			if (flag_search !== "reject") {
+				var oTable = this._oTable;
+				oTable.getBinding("items").filter(aFilter);
+				oTable.getModel().refresh(true);
+			}
+			// var oModel = this.getView().getModel();
+			// oModel.read("/IDOCMV2SET",{
+			// 	success: function(oData,response){
+			// 		oTable.setModel(new JSONModel(oData));
+			// 		oTable.getModel().refresh(true);
+			// 	}
+			// });
 		},
 
 		onRequiredField: function (oEvent) {
@@ -100,7 +169,7 @@ sap.ui.define([
 			this.getView().addDependent(this._oValueHelpDialog);
 
 			this._oValueHelpDialog.getTableAsync().then(function (oTable) {
-				oTable.setModel(this.getOwnerComponent().getModel() );
+				oTable.setModel(this.getOwnerComponent().getModel());
 				oTable.setModel(this._oModelColumns, "columns");
 
 				if (oTable.bindRows) {
@@ -125,11 +194,12 @@ sap.ui.define([
 			this._oValueHelpDialog.setTokens(this._oMultiInput.getTokens());
 			this._oValueHelpDialog.open();
 		},
-		
+
 		onValueHelpOkPress: function (oEvent) {
 			var aTokens = oEvent.getParameter("tokens");
 			this._oMultiInput.setTokens(aTokens);
 			this._oValueHelpDialog.close();
+			this.getView().byId("compCode").fireTokenUpdate();
 		},
 
 		onValueHelpCancelPress: function () {
@@ -138,6 +208,12 @@ sap.ui.define([
 
 		onValueHelpAfterClose: function () {
 			this._oValueHelpDialog.destroy();
+		},
+
+		compCodeChange: function (oEvent) {
+			if (oEvent.getSource().getTokens().length > 0) {
+				oEvent.getSource().setValueState(sap.ui.core.ValueState.None);
+			}
 		}
 	});
 });
