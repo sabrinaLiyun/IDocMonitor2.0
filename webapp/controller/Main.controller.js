@@ -68,6 +68,7 @@ sap.ui.define([
 
 			var aFilter = [];
 			var flag_search;
+			var oTable = this._oTable;
 
 			var oLSSender = this.getView().byId("inputLSSender");
 			if (oLSSender.getValue() === "") {
@@ -136,9 +137,14 @@ sap.ui.define([
 			} else {
 				aFilter.push(new Filter("Gjahr", FilterOperator.EQ, oYear.getSelectedItem().getText()));
 			}
+			
+			// set table title
+			
 
 			if (flag_search !== "reject") {
-				var oTable = this._oTable;
+				var oTitle = this.getView().byId("tableTitle");
+				var sTitle = "Date Range: " + sFrom + "-" + sTo + "(" + oYear.getSelectedItem().getText() + ")";
+				oTitle.setText(sTitle);
 				oTable.getBinding("items").filter(aFilter);
 				oTable.getModel().refresh(true);
 			}
