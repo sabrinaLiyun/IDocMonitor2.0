@@ -12,13 +12,11 @@ sap.ui.define([
 	"use strict";
 	return Controller.extend("com.bosch.idocmonitor.controller.Main", {
 		onInit: function () {
-			// var arrayYears = [{year:"2020"},{year:"2019"}];
-			// var oYear = JSON.stringify(arrayYears);
+
 			this._oMultiInput = this.getView().byId("compCode");
 			var oYears = {
 				arrayYears: []
 			};
-			// var sYear = JSON.stringify(oYear);
 
 			var date = new Date();
 			var currentYear = date.getFullYear();
@@ -27,7 +25,6 @@ sap.ui.define([
 				var oYear = {};
 				previousYear = currentYear - i;
 				oYear.year = previousYear;
-				// oYears.arrayYears.push(oYear);
 				oYears.arrayYears[i] = oYear;
 			}
 
@@ -40,28 +37,43 @@ sap.ui.define([
 					template: "Butxt"
 				}]
 			};
+
+			var oStatus = {
+				arrayStatus: [{
+					value: "Error"
+				}, {
+					value: "All"
+				}]
+			};
+
 			this._oModelColumns = new JSONModel(columns);
 
 			var oModelYear = new JSONModel(oYears);
 			// var oModelYear = new JSONModel(sap.ui.require.toUrl("com/bosch/idocmonitor/localService/years.json"));
 			this.getView().setModel(oModelYear, "years");
-
-			// var oModel = new JSONModel();
-			// this.getView().setModel(oModel);
+			this.getView().setModel(new JSONModel(oStatus), "status");
 
 			this._oTable = this.getView().byId("idocTable");
 
 		},
 
-		updateFinished: function (oEvent) {
-			var sTitle,
-				oTable = oEvent.getSource(),
-				oViewModel = this.getModel(),
-				iTotalItems = oEvent.getParameter("total");
+		onAfterRendering: function () {
+			// set default values
+			var yearItem = new sap.ui.core.Item({
+				text: (new Date()).getFullYear()
+			});
+			this.getView().byId("year").setSelectedItem(yearItem);
 
-			if (iTotalItems && oTable.getBinding("items").isLengthFinal()) {
+			var statusItem = new sap.ui.core.Item({
+				text: "Error"
+			});
+			this.getView().byId("idocStatus").setSelectedItem(statusItem);
 
-			}
+			var today = new Date();
+			var firstday = new Date(today.getFullYear(), today.getMonth(), 1);
+			var lastday = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+			this.getView().byId("dateRange").setFrom(firstday);
+			this.getView().byId("dateRange").setTo(lastday);
 		},
 
 		onSearch: function () {
@@ -118,13 +130,8 @@ sap.ui.define([
 			if (oDateRange.getDateValue() !== null) {
 				var dateFrom = oDateRange.getFrom();
 				var dateTo = oDateRange.getTo();
-				var sFrom = Formatter.dateFormat(dateFrom);
-				var sTo = Formatter.dateFormat(dateTo);
+
 				aFilter.push(new Filter("Credat", FilterOperator.BT, dateFrom, dateTo));
-				// aFilter.push(new Filter("Credat",FilterOperator.LE,sTo));
-				// var oTitle = this.getView().byId("tableTitle");
-				// var sTitle = sFrom.concat(" - ", sTo);
-				// oTitle.setText(sTitle);
 			} else {
 				flag_search = "reject";
 				oDateRange.setValueState(sap.ui.core.ValueState.Error);
@@ -138,13 +145,14 @@ sap.ui.define([
 				aFilter.push(new Filter("Gjahr", FilterOperator.EQ, oYear.getSelectedItem().getText()));
 			}
 			
-			// set table title
+			var oStatus = this.getView().byId("idocStatus");
 			
+			if(oStatus.getSelectedItem().getText() === "Error") {
+				var errorFilter = new Filter({filters:[new Filter("SndStatus",FilterOperator.NE, "53"), new Filter("RcvStatus",FilterOperator.NE, "03")],and: false});
+				aFilter.push(errorFilter);
+			}
 
 			if (flag_search !== "reject") {
-				var oTitle = this.getView().byId("tableTitle");
-				var sTitle = "Date Range: " + sFrom + "-" + sTo + "(" + oYear.getSelectedItem().getText() + ")";
-				oTitle.setText(sTitle);
 				oTable.getBinding("items").filter(aFilter);
 				oTable.getModel().refresh(true);
 			}
@@ -155,6 +163,15 @@ sap.ui.define([
 			// 		oTable.getModel().refresh(true);
 			// 	}
 			// });
+		},
+		
+		onUpdateFinished: function() {
+			var length = this._oTable.getBinding("items").getLength();
+			if(length > 0) {
+				var oTitle = this.getView().byId("tableTitle");
+				var sTitle = "IDocs(" + length + ")";
+				oTitle.setText(sTitle);
+			}
 		},
 
 		onRequiredField: function (oEvent) {
