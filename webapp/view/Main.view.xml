@@ -64,7 +64,7 @@
 							</filterbar:FilterItem>
 							<filterbar:FilterItem label="{i18n>idocStatus}" name="idocStatus">
 								<filterbar:control>
-									<ComboBox id="idocStatus"  items="{path: 'status>/arrayStatus' }">
+									<ComboBox id="idocStatus" items="{path: 'status>/arrayStatus' }">
 										<core:Item text="{status>value}"/>
 									</ComboBox>
 								</filterbar:control>
@@ -75,46 +75,68 @@
 			</f:DynamicPageHeader>
 		</f:header>
 		<f:content>
-			<Table id="idocTable" inset="false" noDataText="{i18n>nodata}" updateFinished=".onUpdateFinished"
-				items="{path:'/IDOCMV2SET', sorter:{path:'Bukrs'}}">
+			<Table id="idocTable" inset="false" noDataText="{i18n>nodata}" growingScrollToLoad="true" growingThreshold="25"
+				updateFinished=".onUpdateFinished" items="{path:'/IDOCMV2SET', sorter:{path:'Bukrs'}}">
 				<headerToolbar>
 					<Toolbar>
 						<Title id="tableTitle"></Title>
 					</Toolbar>
 				</headerToolbar>
 				<columns>
-					<Column>
-						<Text text="Transaction ID"/>
+					<Column width="auto" minScreenWidth="Phone">
+						<header>
+							<Text text="Transaction ID" width="auto"/>
+						</header>
 					</Column>
-					<Column>
-						<Text text="LS for Sender"/>
+					<Column width="auto" minScreenWidth="Phone">
+						<header>
+							<Text text="LS for Sender" width="auto"/>
+						</header>
 					</Column>
-					<Column>
-						<Text text="Outbounding IDoc #"/>
+					<Column width="auto" minScreenWidth="Phone">
+						<header>
+							<Text text="Outbounding IDoc #" width="auto"/>
+						</header>
 					</Column>
-					<Column>
-						<Text text="Outbounding IDoc Status"/>
+					<Column width="auto" minScreenWidth="Phone">
+						<header>
+							<Text text="Outbounding IDoc Status" width="auto"/>
+						</header>
 					</Column>
-					<Column>
-						<Text text="LS for Receiver"/>
+					<Column width="auto" minScreenWidth="Tablet" demandPopin="true">
+						<header>
+							<Text text="LS for Receiver" width="auto"/>
+						</header>
 					</Column>
-					<Column>
-						<Text text="Inbounding IDoc #"/>
+					<Column width="auto" minScreenWidth="Tablet" demandPopin="true">
+						<header>
+							<Text text="Inbounding IDoc #" width="auto"/>
+						</header>
 					</Column>
-					<Column>
-						<Text text="Inbounding IDoc Status"/>
+					<Column width="auto" minScreenWidth="Tablet" demandPopin="true">
+						<header>
+							<Text text="Inbounding IDoc Status" width="auto"/>
+						</header>
 					</Column>
-					<Column>
-						<Text text="Company Code"/>
+					<Column width="auto" minScreenWidth="Tablet" demandPopin="true">
+						<header>
+							<Text text="Company Code" width="auto"/>
+						</header>
 					</Column>
-					<Column>
-						<Text text="Fiscal Year"/>
+					<Column width="auto" minScreenWidth="Tablet" demandPopin="true">
+						<header>
+							<Text text="Fiscal Year" width="auto"/>
+						</header>
 					</Column>
-					<Column>
-						<Text text="Accounting Doc. No. in Sender"/>
+					<Column width="auto" minScreenWidth="Tablet" demandPopin="true">
+						<header>
+							<Text text="Accounting Doc. No. in Sender" width="auto"/>
+						</header>
 					</Column>
-					<Column>
-						<Text text="Accounting Doc. No. in Receiver"/>
+					<Column width="auto" minScreenWidth="Tablet" demandPopin="true">
+						<header>
+							<Text text="Accounting Doc. No. in Receiver" width="auto"/>
+						</header>
 					</Column>
 				</columns>
 				<items>
