@@ -79,12 +79,12 @@ sap.ui.define([
 		onSearch: function () {
 
 			var aFilter = [];
-			var flag_search;
+			var flagSearch;
 			var oTable = this._oTable;
 
 			var oLSSender = this.getView().byId("inputLSSender");
 			if (oLSSender.getValue() === "") {
-				flag_search = "reject";
+				flagSearch = "reject";
 				oLSSender.setValueState(sap.ui.core.ValueState.Error);
 			} else {
 				aFilter.push(new Filter("Sndprn", FilterOperator.EQ, oLSSender.getValue()));
@@ -92,7 +92,7 @@ sap.ui.define([
 
 			var oLSReceiver = this.getView().byId("inputLSReceiver");
 			if (oLSReceiver.getValue() === "") {
-				flag_search = "reject";
+				flagSearch = "reject";
 				oLSReceiver.setValueState(sap.ui.core.ValueState.Error);
 			} else {
 				aFilter.push(new Filter("Rcvprn", FilterOperator.EQ, oLSReceiver.getValue()));
@@ -100,7 +100,7 @@ sap.ui.define([
 
 			var oMsgType = this.getView().byId("inputMsgType");
 			if (oMsgType.getValue() === "") {
-				flag_search = "reject";
+				flagSearch = "reject";
 				oMsgType.setValueState(sap.ui.core.ValueState.Error);
 			} else {
 				aFilter.push(new Filter("Mestyp", FilterOperator.EQ, oMsgType.getValue()));
@@ -108,7 +108,7 @@ sap.ui.define([
 
 			var oBukrs = this.getView().byId("compCode");
 			if (oBukrs.getTokens().length === 0) {
-				flag_search = "reject";
+				flagSearch = "reject";
 				oBukrs.setValueState(sap.ui.core.ValueState.Error);
 			} else {
 				for (var i = 0; i < oBukrs.getTokens().length; i++) {
@@ -133,26 +133,29 @@ sap.ui.define([
 
 				aFilter.push(new Filter("Credat", FilterOperator.BT, dateFrom, dateTo));
 			} else {
-				flag_search = "reject";
+				flagSearch = "reject";
 				oDateRange.setValueState(sap.ui.core.ValueState.Error);
 			}
 
 			var oYear = this.getView().byId("year");
 			if (oYear.getSelectedItem() === null) {
-				flag_search = "reject";
+				flagSearch = "reject";
 				oYear.setValueState(sap.ui.core.ValueState.Error);
 			} else {
 				aFilter.push(new Filter("Gjahr", FilterOperator.EQ, oYear.getSelectedItem().getText()));
 			}
-			
+
 			var oStatus = this.getView().byId("idocStatus");
-			
-			if(oStatus.getSelectedItem().getText() === "Error") {
-				var errorFilter = new Filter({filters:[new Filter("SndStatus",FilterOperator.NE, "53"), new Filter("RcvStatus",FilterOperator.NE, "03")],and: false});
+
+			if (oStatus.getSelectedItem().getText() === "Error") {
+				var errorFilter = new Filter({
+					filters: [new Filter("SndStatus", FilterOperator.NE, "53"), new Filter("RcvStatus", FilterOperator.NE, "03")],
+					and: false
+				});
 				aFilter.push(errorFilter);
 			}
 
-			if (flag_search !== "reject") {
+			if (flagSearch !== "reject") {
 				oTable.getBinding("items").filter(aFilter);
 				oTable.getModel().refresh(true);
 			}
@@ -164,13 +167,16 @@ sap.ui.define([
 			// 	}
 			// });
 		},
-		
-		onUpdateFinished: function() {
+
+		onUpdateFinished: function () {
 			var length = this._oTable.getBinding("items").getLength();
-			if(length > 0) {
-				var oTitle = this.getView().byId("tableTitle");
+			var oTitle = this.getView().byId("tableTitle");
+			if (length > 0) {
+
 				var sTitle = "IDocs(" + length + ")";
 				oTitle.setText(sTitle);
+			} else {
+				oTitle.setText("");
 			}
 		},
 
